@@ -22,128 +22,240 @@ def get_kaf_som():
     temp = df[df['لنگش جدید'] == "*"]
     temp = temp[~temp['4'].isna()]
     kaf_som = temp[["شماره دام", "روز", "4"]].groupby(["شماره دام", "روز"]).nunique()
-    return kaf_som.sum()[2]
+    return kaf_som.sum()[0]
 
 
 def get_white_line():
     temp = df[df['لنگش جدید'] == "*"]
-    temp = temp[~temp['2'].isna() | ~temp['3'].isna()]
+    temp = temp[~temp['2'].isna() | ~temp['3'].isna() | ~temp['4'].isna()]
 
     def white_line_count(temp_df):
         two = temp_df["2"].values
         three = temp_df["3"].values
         values = np.unique(np.concatenate([two, three]))
         values = values[~np.isnan(values)]
-        return values.shape[0]
+        if values.shape[0] != 0:
+            four = temp_df["4"].values
+            four = four[~np.isnan(four)]
+            if four.shape[0] != 0:
+                return values.shape[0] - np.intersect1d(four, values).shape[0]
+            else:
+                return values.shape[0]
+        else:
+            return 0
 
-    white_line = temp.groupby(["شماره دام", "روز"]).apply(white_line_count)
+    white_line = temp[["شماره دام", "روز", "2", "3", "4"]].groupby(["شماره دام", "روز"]).apply(white_line_count)
 
-    # print(white_line.sum())
     return white_line.sum()
 
 
 def get_panje():
-    pass
+    temp = df[df['لنگش جدید'] == "*"]
+    temp = temp[~temp['1'].isna() | ~temp['5'].isna() | ~temp['4'].isna()]
+
+    def white_line_count(temp_df):
+        one = temp_df["1"].values
+        five = temp_df["5"].values
+        values = np.unique(np.concatenate([one, five]))
+        values = values[~np.isnan(values)]
+        if values.shape[0] != 0:
+            four = temp_df["4"].values
+            four = four[~np.isnan(four)]
+            if four.shape[0] != 0:
+                return values.shape[0] - np.intersect1d(four, values).shape[0]
+            else:
+                return values.shape[0]
+        else:
+            return 0
+
+    panje = temp[["شماره دام", "روز", "1", "5", "4"]].groupby(["شماره دام", "روز"]).apply(white_line_count)
+    result = panje.sum()
+
+    return result
 
 
 def get_pashne():
-    pass
+    temp = df[df['لنگش جدید'] == "*"]
+    temp = temp[~temp['6'].isna() | ~temp['4'].isna()]
+
+    def inner_pashne(temp_df):
+        six = temp_df["6"].values
+        values = np.unique(six)
+        values = values[~np.isnan(values)]
+        if values.shape[0] != 0:
+            four = temp_df["4"].values
+            four = four[~np.isnan(four)]
+            if four.shape[0] != 0:
+                return values.shape[0] - np.intersect1d(four, values).shape[0]
+            else:
+                return values.shape[0]
+        else:
+            return 0
+
+    pashne = temp[["شماره دام", "روز", "6", "4"]].groupby(["شماره دام", "روز"]).apply(inner_pashne)
+    return pashne.sum()
 
 
 def get_tarak():
-    pass
+    temp = df[df['لنگش جدید'] == "*"]
+    temp = temp[~temp['7'].isna() | ~temp['8'].isna() | ~temp['11'].isna() | ~temp['12'].isna()]
+
+    def inner_tarak(temp_df):
+        seven = temp_df["7"].values
+        eight = temp_df["8"].values
+        eleven = temp_df["11"].values
+        twelve = temp_df["12"].values
+        values = np.unique(np.concatenate([seven, eight, eleven, twelve]))
+        values = values[~np.isnan(values)]
+        return values.shape[0]
+
+    tarak = temp[["شماره دام", "روز", "7", "8", "11", "12"]].groupby(["شماره دام", "روز"]).apply(inner_tarak)
+    return tarak.sum()
 
 
 def get_nine():
-    pass
+    temp = df[df['لنگش جدید'] == "*"]
+    temp = temp[~temp['9'].isna()]
+    kaf_som = temp[["شماره دام", "روز", "9"]].groupby(["شماره دام", "روز"]).nunique()
+    return kaf_som.sum()[0]
 
 
 def get_visit():
-    pass
+    temp = df[df['بازدید لنگش'] == "*"]
+    visit_count = temp[["شماره دام", "روز"]].groupby(["روز"]).nunique()
+    return visit_count.sum()[0]
 
 
 def get_new_limp():
-    pass
+    temp = df[df["لنگش جدید"] == "*"]
+    limp_count = temp[["شماره دام", "روز"]].groupby(["روز"]).nunique()
+    return limp_count.sum()[0]
 
 
 def get_sad():
-    pass
+    temp = df[df["100 روزه"] == "*"]
+    sad_count = temp[["شماره دام", "روز"]].groupby(["روز"]).nunique()
+    return sad_count.sum()[0]
 
 
 def get_dry():
-    pass
+    temp = df[df["خشکی"] == "*"]
+    dry_count = temp[["شماره دام", "روز"]].groupby(["روز"]).nunique()
+    return dry_count.sum()[0]
 
 
 def get_delay():
-    pass
+    temp = df[df["عقب مانده تولید مثلی"] == "*"]
+    delay_count = temp[["شماره دام", "روز"]].groupby(["روز"]).nunique()
+    return delay_count.sum()[0]
 
 
 def get_group():
-    pass
+    temp = df[df['سم چینی گروهی'] == "*"]
+    group_count = temp[["شماره دام", "روز"]].groupby(["روز"]).nunique()
+    return group_count.sum()[0]
 
 
 def get_long():
-    pass
+    temp = df[df['سم بلند'] == "*"]
+    group_count = temp[["شماره دام", "روز"]].groupby(["روز"]).nunique()
+    return group_count.sum()[0]
 
 
 def get_som_chini():
-    pass
+    temp = df[df['سم چینی'] == "*"]
+    group_count = temp[["شماره دام", "روز"]].groupby(["روز"]).nunique()
+    return group_count.sum()[0]
 
 
 def get_high_score():
-    pass
+    temp = df[df['اسکور بالا'] == "*"]
+    group_count = temp[["شماره دام", "روز"]].groupby(["روز"]).nunique()
+    return group_count.sum()[0]
 
 
 def get_talise():
-    pass
+    temp = df[df['تلیسه'] == "*"]
+    group_count = temp[["شماره دام", "روز"]].groupby(["روز"]).nunique()
+    return group_count.sum()[0]
 
 
 def get_erjaii():
-    pass
+    temp = df[df['ارجاعی'] == "*"]
+    group_count = temp[["شماره دام", "روز"]].groupby(["روز"]).nunique()
+    return group_count.sum()[0]
 
 
 def get_takhte():
-    pass
+    temp = df[df['تخته گذاری'] == "*"]
+    group_count = temp[["شماره دام", "روز"]].groupby(["روز"]).nunique()
+    return group_count.sum()[0]
+
+
+def get_recorde_avg():
+    record_count = df[["شماره دام", "روز"]].groupby(["روز"]).nunique()
+    return record_count.mean()[0]
 
 
 if __name__ == '__main__':
-    if get_felemon() != 8:
-        print("wrong felemon")
-    if get_dramatit() != 28:
-        print("wrong dramatit")
-    if get_kaf_som() != 101:
-        print("wrong kaf som")
-    if get_white_line() != 12:
-        print("wrong white line")
-    if get_panje() != 17:
-        print("wrong panje")
-    if get_pashne() != 37:
-        print("wrong pashne")
-    if get_tarak() != 1:
-        print("wrong tarak")
-    if get_nine() != 9:
-        print("wrong nine")
-    if get_visit() != 80:
-        print("wrong visit")
-    if get_new_limp() != 141:
-        print("wrong langesh jadid")
-    if get_sad() != 74:
-        print("wrong sad roze")
-    if get_dry() != 130:
-        print("wrong dry")
-    if get_delay() != 60:
-        print("wrong delay")
-    if get_group() != 0:
-        print("wrong group")
-    if get_long() != 3:
-        print("wrong long")
-    if get_som_chini() != 983:
-        print("wrong som chini")
-    if get_high_score() != 626:
-        print("wrong high score")
-    if get_talise() != 1:
-        print("wrong talise")
-    if get_erjaii() != 51:
-        print("wrong erjaii")
-    if get_takhte() != 159:
-        print("wrong takhte")
+    temp_value = get_felemon()
+    if temp_value != 8:
+        print("wrong felemon", temp_value, 8)
+    temp_value = get_dramatit()
+    if temp_value != 28:
+        print("wrong dramatit", temp_value, 28)
+    temp_value = get_kaf_som()
+    if temp_value != 101:
+        print("wrong kaf som", temp_value, 101)
+    temp_value = get_white_line()
+    if temp_value != 12:
+        print("wrong white line", temp_value, 12)
+    temp_value = get_panje()
+    if temp_value != 17:
+        print("wrong panje", temp_value, 17)
+    temp_value = get_pashne()
+    if temp_value != 37:
+        print("wrong pashne", temp_value, 37)
+    temp_value = get_tarak()
+    if temp_value != 1:
+        print("wrong tarak", temp_value, 1)
+    temp_value = get_nine()
+    if temp_value != 9:
+        print("wrong nine", temp_value, 9)
+    temp_value = get_visit()
+    if temp_value != 80:
+        print("wrong visit", temp_value, 80)
+    temp_value = get_new_limp()
+    if temp_value != 141:
+        print("wrong langesh jadid", temp_value, 141)
+    temp_value = get_sad()
+    if temp_value != 74:
+        print("wrong sad roze", temp_value, 74)
+    temp_value = get_dry()
+    if temp_value != 130:
+        print("wrong dry", temp_value, 130)
+    temp_value = get_delay()
+    if temp_value != 60:
+        print("wrong delay", temp_value, 60)
+    temp_value = get_group()
+    if temp_value != 0:
+        print("wrong group", temp_value, 0)
+    temp_value = get_long()
+    if temp_value != 3:
+        print("wrong long", temp_value, 3)
+    temp_value = get_som_chini()
+    if temp_value != 983:
+        print("wrong som chini", temp_value, 983)
+    temp_value = get_high_score()
+    if temp_value != 626:
+        print("wrong high score", temp_value, 626)
+    temp_value = get_talise()
+    if temp_value != 1:
+        print("wrong talise", temp_value, 1)
+    temp_value = get_erjaii()
+    if temp_value != 51:
+        print("wrong erjaii", temp_value, 51)
+    temp_value = get_takhte()
+    if temp_value != 159:
+        print("wrong takhte", temp_value, 159)
+    print("tedad amaliat", get_recorde_avg())
