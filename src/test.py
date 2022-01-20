@@ -2,6 +2,7 @@ import numpy as np
 import pandas as pd
 
 df = pd.read_excel("test.xlsx")
+areas = [f"{i}" for i in range(13)]
 
 
 def get_felemon():
@@ -76,24 +77,9 @@ def get_panje():
 
 def get_pashne():
     temp = df[df['لنگش جدید'] == "*"]
-    temp = temp[~temp['6'].isna() | ~temp['4'].isna()]
-
-    def inner_pashne(temp_df):
-        six = temp_df["6"].values
-        values = np.unique(six)
-        values = values[~np.isnan(values)]
-        if values.shape[0] != 0:
-            four = temp_df["4"].values
-            four = four[~np.isnan(four)]
-            if four.shape[0] != 0:
-                return values.shape[0] - np.intersect1d(four, values).shape[0]
-            else:
-                return values.shape[0]
-        else:
-            return 0
-
-    pashne = temp[["شماره دام", "روز", "6", "4"]].groupby(["شماره دام", "روز"]).apply(inner_pashne)
-    return pashne.sum()
+    temp = temp[~temp['6'].isna()]
+    get_pashne = temp[["شماره دام", "روز", "6"]].groupby(["شماره دام", "روز"]).nunique()
+    return get_pashne.sum()[0]
 
 
 def get_tarak():
@@ -188,8 +174,14 @@ def get_erjaii():
 
 def get_takhte():
     temp = df[df['تخته گذاری'] == "*"]
-    group_count = temp[["شماره دام", "روز"]].groupby(["روز"]).nunique()
-    return group_count.sum()[0]
+
+    def inner_takhte(temp_df):
+        fingers = np.unique(temp_df[areas].values)
+        fingers = fingers[~np.isnan(fingers)]
+        return fingers.shape[0]
+
+    group_count = temp[["شماره دام", "روز"] + areas].groupby(["شماره دام", "روز"]).apply(inner_takhte)
+    return group_count.sum()
 
 
 def get_recorde_avg():
@@ -214,8 +206,8 @@ if __name__ == '__main__':
     if temp_value != 17:
         print("wrong panje", temp_value, 17)
     temp_value = get_pashne()
-    if temp_value != 37:
-        print("wrong pashne", temp_value, 37)
+    if temp_value != 34:
+        print("wrong pashne", temp_value, 34)
     temp_value = get_tarak()
     if temp_value != 1:
         print("wrong tarak", temp_value, 1)
@@ -256,6 +248,6 @@ if __name__ == '__main__':
     if temp_value != 51:
         print("wrong erjaii", temp_value, 51)
     temp_value = get_takhte()
-    if temp_value != 159:
-        print("wrong takhte", temp_value, 159)
+    if temp_value != 158:
+        print("wrong takhte", temp_value, 158)
     print("tedad amaliat", get_recorde_avg())
