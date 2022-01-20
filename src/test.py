@@ -221,17 +221,17 @@ if __name__ == '__main__':
     if temp_value != 8:
         print("wrong felemon", temp_value, 8)
     temp_value = get_dramatit()
-    if temp_value != 28:
-        print("wrong dramatit", temp_value, 28)
+    if temp_value != 27:
+        print("wrong dramatit", temp_value, 27)
     temp_value = get_kaf_som()
-    if temp_value != 101:
-        print("wrong kaf som", temp_value, 101)
+    if temp_value != 96:
+        print("wrong kaf som", temp_value, 96)
     temp_value = get_white_line()
-    if temp_value != 12:
-        print("wrong white line", temp_value, 12)
+    if temp_value != 23:
+        print("wrong white line", temp_value, 23)
     temp_value = get_panje()
-    if temp_value != 17:
-        print("wrong panje", temp_value, 17)
+    if temp_value != 6:
+        print("wrong panje", temp_value, 6)
     temp_value = get_pashne()
     if temp_value != 34:
         print("wrong pashne", temp_value, 34)
@@ -245,17 +245,17 @@ if __name__ == '__main__':
     if temp_value != 80:
         print("wrong visit", temp_value, 80)
     temp_value = get_new_limp()
-    if temp_value != 141:
-        print("wrong langesh jadid", temp_value, 141)
+    if temp_value != 142:
+        print("wrong langesh jadid", temp_value, 142)
     temp_value = get_sad()
     if temp_value != 74:
         print("wrong sad roze", temp_value, 74)
     temp_value = get_dry()
-    if temp_value != 130:
-        print("wrong dry", temp_value, 130)
+    if temp_value != 128:
+        print("wrong dry", temp_value, 128)
     temp_value = get_delay()
-    if temp_value != 60:
-        print("wrong delay", temp_value, 60)
+    if temp_value != 59:
+        print("wrong delay", temp_value, 59)
     temp_value = get_group()
     if temp_value != 0:
         print("wrong group", temp_value, 0)
@@ -263,17 +263,17 @@ if __name__ == '__main__':
     if temp_value != 3:
         print("wrong long", temp_value, 3)
     temp_value = get_som_chini()
-    if temp_value != 983:
-        print("wrong som chini", temp_value, 983)
+    if temp_value != 939:
+        print("wrong som chini", temp_value, 939)
     temp_value = get_high_score()
-    if temp_value != 626:
-        print("wrong high score", temp_value, 626)
+    if temp_value != 522:
+        print("wrong high score", temp_value, 522)
     temp_value = get_talise()
     if temp_value != 1:
         print("wrong talise", temp_value, 1)
     temp_value = get_erjaii()
-    if temp_value != 51:
-        print("wrong erjaii", temp_value, 51)
+    if temp_value != 49:
+        print("wrong erjaii", temp_value, 49)
     temp_value = get_takhte()
     if temp_value != 158:
         print("wrong takhte", temp_value, 158)
